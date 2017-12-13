@@ -1,16 +1,22 @@
-##install packages ggplot2,car,GGally, knitr
 library(ggplot2)
 library(car)
 library(knitr)
 library(GGally)
 library(leaps)
 
+##(LB)(\LB) indicates codes taken from "MATH 341 - Tutorial 5: Model selection"
+##written by Léo Belzile
+
 prostate <- read.table("http://sma.epfl.ch/~lbelzile/math341/prostate.dat", header = TRUE)
 
 ##Exploratory data analysis
 str(prostate)
+
+##(LB)
 apply(prostate, 2, range)
 print(GGally::ggpairs(prostate[,-c(5,7)]), progress = FALSE)
+##(\LB)
+
 prostate <- prostate[c(-37),]
 attach(prostate)
 gleason <- factor(gleason, ordered=FALSE)
@@ -31,6 +37,7 @@ plot(x=lcp, y=studentized,xlab="Log capsular penetration",ylab="Standardized res
 plot(x=gleason, y=studentized,xlab="Gleason score",ylab="Standardized residuals",cex.lab=1.4)
 plot(x=pgg45, y=studentized,xlab="Pct of Gleason score 4 or 5",ylab="Standardized residuals",cex.lab=1.4)
 
+##(LB)
 par(mfrow = c(2, 2), mar = c(5, 5, 1.5, 0.5))
 bl <- scales::alpha("black", 0.5) #semi-transparent black
 n <- nrow(prostate)
@@ -49,6 +56,7 @@ residualPlot(full_model, type = "rstudent", quadratic = FALSE,
 plot(cooks.distance(full_model), col = bl, pch = 20, ylab = "Cook's distances", main="(c) Cook's distance")
 abline(h = 8/(n-2*length(coef(full_model))), col = 2)
 influencePlot(full_model, ylab = "Standardized residuals", main="(d) Hat-Values")
+##(\LB)
 
 ##Look at influential observations
 prostate[38,] ##outlier value
@@ -105,9 +113,12 @@ vif(interaction1_model)
 ##select backward_selection_model
 final_model <- backward_selection_model
 
-summary_final <- summary(final_model)
-knitr::kable(coef(summary_final), digits = 3)
+summary(final_model)
 vif(final_model)
 
+##see if there is correlation between lcavol and lpsa
+
+##(LB)
 par(mfrow = c(1, 1))
 car::avPlot(lm(lcavol ~ lpsa + lweight + age + lbph + svi + lcp + gleason + pgg45), variable = "lpsa", ellipse = TRUE, col.lines = NULL)
+##(\LB)
