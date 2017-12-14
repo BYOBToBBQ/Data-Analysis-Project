@@ -28,7 +28,7 @@ Linear Models
 \quad The goal of this report is to discuss the factors affecting the concentration of prostate specific antigen (PSA). For our analysis we will first describe the methods that we will use and then construct a Gaussian linear model for the data. We will then interpret the results and discuss the strengths and weaknesses of this approach. Finally we will propose improvements for further investigations.
 
 \section{The Data}
-\quad We will base our analysis on the dataset published in Journal of Urology 141(5), 1989, pp 1076-1083. The dataset contains 8 variables and 97 observations and was collected on men before they underwent radical prostatectomy, a surgical procedure during which the prostate gland is removed. The data comes from a study that examined the correlation between PSA and several clinical measures. 
+\quad We will base our analysis on the dataset published in the Journal of Urology 141(5), 1989, pp 1076-1083. The dataset contains 8 variables and 97 observations and was collected on men before they underwent radical prostatectomy, a surgical procedure during which the prostate gland is removed. The data comes from a study that examined the correlation between PSA and several clinical measures. 
 
 \begin{table}[ht]
 \centering
@@ -52,10 +52,10 @@ Linear Models
 
 
 \section{Methodology and Outline}
-\quad  We will first fit a Gaussian linear model to the data [1] with the PSA as the response while incorporating all possible covariates and then check with diagnostic plots that the 4 assumptions inherent to this model hold in this context: namely linearity, homoskedasticity, and the independence and gaussianess of the error terms [2]. We will also look for leverage points [3] and outliers as well [4] as try to assess the level of collinearity of the data. Once this done we will fit all possible models corresponding to all different combinations of covariates and select the model which has the lowest Bayesian Information Criterion (BIC) [5]. We will also build a model with backward selection [6]. In the next step we will add interactions between the covariates selected and then compare all models produced. We will then select the final model by comparing several metrics: their Akaike Information Criterion (AIC) [7], their BIC, the Variance Inflation Factors of their respective parameters (VIF) [8] and their adjusted R squared [9]. Finally we will interpret our results and criticize them.
+\quad  We will first fit a Gaussian linear model to the data [1] with the PSA as the response while incorporating all possible covariates and then check with diagnostic plots that the 4 assumptions inherent to this model hold in this context: namely linearity, homoskedasticity, and the independence and gaussianess of the error terms [2]. We will also look for leverage points [3] and outliers as well [4] as try to assess the level of collinearity of the data. Once this done we will fit all possible models corresponding to all different combinations of covariates and select the model which has the lowest Bayesian Information Criterion (BIC) [5]. We will also build a model with backward selection [6]. In the next step we will consider interactions between some of the covariates selected and then compare all models produced. We will then select the final model by comparing several metrics: their Akaike Information Criterion (AIC) [7], their BIC, the Variance Inflation Factors of their respective parameters (VIF) [8] and their adjusted R squared [9]. Finally we will interpret our results and criticize them.
 
 \section{Analysis}
-\quad Let's start with a matrix scatterplot of the data to see if a Gaussian linear model is appropriate for the data and if transformations of the covariates are necessary. 
+\quad Let's start with a matrix scatterplot of the data to see if a Gaussian linear model is appropriate and if transformations of the covariates are necessary. 
 
 \begin{figure}[htb]
 \begin{center}
@@ -73,9 +73,9 @@ As we can see on Figure 1 such a model seems appropriate in this case since the 
 \end{center}
 \end{figure}
 
-We now fit the full model (Model 1) as described in the outline and look at the diagnostic plots produced. By looking at covariates vs residuals plots we realise that the hypothesis of linearity of the response with respect to the explanatories holds since no pattern emerges from the plots. In Figure 2 (b) homoskedasticity  is respected since we observe no trumpet or curved pattern. Furthermore we can see in Figure 2 (a) that the hypothesis of normality of the errors seems respected since the quantiles of our standardized residuals correspond to a student distribution. Finally by look at Figure 2 (c) and (d) we can see that there are 3 observations that exert an abnormal influence on the plot: observations 39,41 and 47. By looking at their associated residuals we can conclude that 39 is an outlier (r = -2.74) and that 41 and 47 are leverage points. Finally we see see that the condition number of the matrix [10] is 883.33 which shows that indeed our data exhibits pathological multicollinearity. In this study we will only flag these two problems while still proposing ways to deal with them later in further investigations.
+We now fit the full model (Model 1) as described in the outline and look at the diagnostic plots produced. By looking at covariates vs residuals plots we realise that the hypothesis of linearity of the response with respect to the explanatories holds since no pattern emerges from the plots. In Figure 2 (b) homoskedasticity  is respected since we observe no trumpet or curved pattern. Furthermore we can see in Figure 2 (a) that the hypothesis of normality of the errors seems respected since the quantiles of our standardized residuals correspond to a student distribution. Finally by looking at Figure 2 (c) and (d) we can see that there are 3 observations that exert an abnormal influence on the plot: observations 39,41 and 47. By looking at their associated residuals we can conclude that 39 is an outlier (r = -2.74) and that 41 and 47 are leverage points. Finally we see that the condition number of the matrix [10] is 883.33 which shows that indeed our data exhibits pathological multicollinearity. In this study we will only flag these two problems while still proposing ways to deal with them later in further investigations.
 
-Next we try to build a better model by using both backward selection and by fitting all possible models and then selecting the one with the lowest BIC. Both methods result in the same model (Model 2) and only include the log cancer volume (lcavol), the log prostate weight (lweight) and the seminal vesicle invasion indicator (svi) as covariates. We will build two more model by adding interactions between lcavol and lweight (Model 3) and lcavol and svi (Model 4). We now compare the models produced.
+Next we try to build a better model by using both backward selection and by fitting all possible models and then selecting the one with the lowest BIC. Both methods result in the same model (Model 2) and only include the log cancer volume (lcavol), the log prostate weight (lweight) and the seminal vesicle invasion indicator (svi) as covariates. We will build two more models by adding interactions  between lcavol and lweight (Model 3) and lcavol and svi (Model 4). We now compare the models produced.
 
 \begin{table}[ht]
 \centering
@@ -99,7 +99,7 @@ By looking at Table 1 we see that both Model 2 and Model 3 have minimal AIC/BIC 
 
 \begin{table}[ht]
 \centering
-\caption{Summary model selected} \label{summary}
+\caption{Summary of Model 2} \label{summary}
 \begin{tabular}{rrrrr}
   \hline
  & Estimate & Std. Error & t value & Pr($>$$|$t$|$) \\ 
@@ -114,7 +114,7 @@ By looking at Table 1 we see that both Model 2 and Model 3 have minimal AIC/BIC 
 
 \begin{table}[ht]
 \centering
-\caption{VIF table} \label{summary}
+\caption{VIF table} \label{summary1}
 \begin{tabular}{rrrrr}
   \hline
  & lcavol & lweight & svi \\ 
@@ -124,9 +124,9 @@ VIF & 1.49 & 1.09 & 1.41 \\
 \end{tabular}
 \end{table}
 
-We see that all the variables chosen in the final model are deemed significant and that the VIFs of the parameters are at an acceptable level to try to interpret the model. The baseline level of PSA for a patient is 0.46 ng/ml according to this model. Furthermore we expect a 0.53\% increase in PSA levels when the cancer volume increases by 1\%, a 0.66\% increase when the weight of the prostate increases by 1\% and a 9.37\%  increase when in the presence of seminal vesicle invasion. We also didn't find any changes in PSA concentration that are due to interactions between the cancer volume and other variables.
+We see that all the variables chosen in the final model are deemed significant and that the VIFs of the parameters are at an acceptable level to try to interpret the model. The level of PSA for a patient is 0.46 ng/ml when lcavol = 1 milliliters and lweight = 1 grams according to this model. Furthermore we expect a 0.53\% increase in PSA levels when the cancer volume increases by 1\%, a 0.66\% increase when the weight of the prostate increases by 1\% and a 9.37\%  increase when in the presence of seminal vesicle invasion. We also didn't find any changes in PSA concentration that are due to interactions between the cancer volume and other variables.
 
-The PSA is a protein produced by normal and malignant cells of the prostate, thus it is not surprising to see that the weight of the prostate aswell as the cancer volume will both have a positive impact on the levels of production of this protein. Indeed the heavier the prostate and the bigger the number of cancerous cells, the more they can produce PSA. The indication of a seminal vehicle invasion can also be a marker for a more aggressive form cancer, since it has spread to other areas, which means that the malignant cells are more biologically active and thus that they will produce more biological agents including PSA.
+The PSA is a protein produced by normal and malignant cells of the prostate, thus it is not surprising to see that the weight of the prostate aswell as the cancer volume will both have a positive impact on the levels of production of this protein. Indeed the heavier the prostate and the bigger the number of cancerous cells, the more they can produce PSA. The indication of a seminal vehicle invasion can also be a marker for a more aggressive form cancer, since it has spread to other areas, which means that the malignant cells are more biologically active and thus that they will produce more of all kinds of proteins including PSA.
 
 From this model we can see that there seems to be link between the level of PSA and the size and/or aggressiveness of a cancer, which means that PSA could potentially be used to detect prostate cancer: a higher concentration of PSA could indicate the presence of the sickness. However we can't be conclusive about this since our dataset contained only men known to have prostate cancer and we have no idea what are the concentration levels of this protein for healthy men or what are other non-pathological factors affecting its production.
 
